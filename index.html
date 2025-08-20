@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Praksis 2025 – Status & Kommunikasjon</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <div class="wrap row">
+    <div class="brand">
+      <div class="logo">UiA</div>
+      <div>
+        <h1>Praksis 2025</h1>
+        <p class="muted">Student ↔ UiA ↔ Student</p>
+        <a href="dagbok.html" class="btn">Gå til dagbok/kalender</a>
+      </div>
+    </div>
+    <div class="badge">Gruppe 2025 – Moment Analyse</div>
+  </div>
+</header>
+
+<main>
+  <!-- Venstre kolonne -->
+  <section>
+    <div class="card">
+      <div class="title"><div class="ico">📄</div><h2>1) Oppstart og formål</h2>
+    </div>
+      <p>
+        Vi skal utvikle et nettsted for Moment Analyse som kan måle CO2 eller noe annet.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="title"><div class="ico">👥</div><h2>2) Oppgaver og fokusområder</h2></div>
+      <ul>
+        <li>Lage et brukervennlig nettsted som gjør kommunikasjon enkelt.</li>
+        <li>Tilrettelegge for dialog mellom studenter og ansatte ved UiA.</li>
+        <li>Utforske moderne verktøy for tilgjengelighet og sikkerhet.</li>
+        <li>Hente inspirasjon fra tidligere praksis (Praksis 2025 og tidligere).</li>
+      </ul>
+      <p class="muted">
+        <a href="https://www.tangeraas.dev/kartverket" target="_blank">Tidligere eksempel</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="title"><div class="ico">⏳</div><h2>3) Status nå</h2></div>
+      <div class="statusgrid">
+        <div>
+          <p class="muted">Fase</p>
+          <p>Planlegging & Design</p>
+        </div>
+        <div>
+          <p class="muted">Neste steg</p>
+          <p>Prototype funksjoner for meldinger & grupper</p>
+        </div>
+        <div>
+          <p class="muted">Ansvar</p>
+          <p>Fordele roller i gruppen</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Høyre kolonne -->
+  <aside>
+    <div class="card">
+      <div class="title"><div class="ico">💬</div><h2>Meldingstavle</h2></div>
+      <form id="msgform">
+        <input type="text" id="author" placeholder="Navn (valgfritt)" />
+        <textarea id="content" rows="4" placeholder="Skriv en kort status eller et spørsmål…"></textarea>
+        <div class="row">
+          <button type="submit">Publiser melding</button>
+          <button type="button" id="clear">Tøm tavle</button>
+        </div>
+      </form>
+      <div id="messages"></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+  const form=document.getElementById('msgform');
+  const list=document.getElementById('messages');
+  const clearBtn=document.getElementById('clear');
+  const LS_KEY='praksis2025_msgs';
+
+  function render(){
+    list.innerHTML='';
+    const msgs=JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    msgs.forEach(m=>{
+      const el=document.createElement('div');
+      el.className='msg';
+      el.innerHTML=`<strong>${m.author||'Anonym'}:</strong> ${m.content}<br><span class="muted">${new Date(m.ts).toLocaleString()}</span>`;
+      list.appendChild(el);
+    });
+  }
+
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const author=document.getElementById('author').value.trim();
+    const content=document.getElementById('content').value.trim();
+    if(!content) return;
+    const msgs=JSON.parse(localStorage.getItem(LS_KEY)||'[]');
+    msgs.unshift({author,content,ts:Date.now()});
+    localStorage.setItem(LS_KEY,JSON.stringify(msgs));
+    form.reset();
+    render();
+  });
+
+  clearBtn.addEventListener('click',()=>{
+    localStorage.removeItem(LS_KEY);
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>
+
+ 

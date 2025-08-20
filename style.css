@@ -1,0 +1,122 @@
+:root {
+--bg: #f6f7fb;
+--card: #ffffff;
+--text: #0f172a;
+--muted: #64748b;
+--border: #e5e7eb;
+}
+
+
+body {
+margin: 0;
+font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Ubuntu, Arial, sans-serif;
+background: var(--bg);
+color: var(--text);
+}
+
+
+header {
+position: sticky;
+top: 0;
+background: #ffffffcc;
+backdrop-filter: blur(8px);
+border-bottom: 1px solid var(--border);
+}
+
+
+.wrap {
+max-width: 1100px;
+margin: auto;
+padding: 16px;
+}
+
+
+.row { display: flex; gap: 12px; align-items: center; }
+.brand { display: flex; gap: 12px; align-items: center; }
+.logo { width: 40px; height: 40px; border-radius: 12px; background: #0f172a; color: #fff; display: grid; place-items: center; font-weight: bold; }
+
+
+.badge { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); font-size: 12px; background: #fff; }
+
+
+main {
+max-width: 1100px;
+margin: auto;
+padding: 20px;
+display: grid;
+grid-template-columns: 1.7fr 1fr;
+gap: 20px;
+}
+@media (max-width: 900px){ main{ grid-template-columns: 1fr; } }
+
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+.title { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+.ico { width: 28px; height: 28px; border-radius: 8px; background: #f1f5f9; display: grid; place-items: center; }
+
+
+ul { padding-left: 20px; }
+.statusgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+
+
+form { display: grid; gap: 10px; }
+input, textarea { padding: 8px; border-radius: 6px; border: 1px solid var(--border); font: inherit; }
+button { padding: 8px 14px; border: none; border-radius: 6px; background: #0f172a; color: #fff; cursor: pointer; }
+button:hover { opacity: 0.9; }
+button#clear { background: #64748b; }
+
+
+.msg { background: #f8fafc; border: 1px solid var(--border); padding: 8px; border-radius: 8px; margin-top: 8px; font-size: 14px; }
+.muted { color: var(--muted); font-size: 13px; }
+
+/* Stiler for knapp/lenke til dagbok */
+.btn {
+	padding: 8px 16px;
+	border-radius: 6px;
+	background: #0f172a;
+	color: #fff;
+	text-decoration: none;
+	font-weight: 500;
+	transition: background 0.2s, opacity 0.2s;
+	display: inline-block;
+	margin-top: 8px;
+}
+.btn:hover {
+	background: #1e293b;
+	opacity: 0.92;
+}
+.calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-top: 1rem;
+    }
+    .calendar div {
+      border: 1px solid #ddd;
+      min-height: 80px;
+      padding: 5px;
+      font-size: 0.9em;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+    .calendar .today {
+      background: #eef6ff;
+      border-color: #339;
+      font-weight: bold;
+    }
+    .event {
+      background: #dff0d8;
+      margin-top: 4px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 0.8em;
+    }
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+    .cal-header button {
+      padding: 4px 8px;
+    }

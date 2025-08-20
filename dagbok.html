@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Praksis 2025 – Dagbok & Kalender</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <div class="wrap row">
+    <div class="brand">
+      <div class="logo">UiA</div>
+      <div>
+        <h1>Dagbok & Kalender</h1>
+        <p class="muted">Skriv hva vi gjør hver dag + legg avtaler i kalenderen</p>
+        <a href="index.html" class="btn">Tilbake til status</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Venstre: dagbok -->
+  <section>
+    <div class="card">
+      <div class="title"><div class="ico">📓</div><h2>Dagbok</h2></div>
+      <form id="diaryForm">
+        <input type="date" id="diaryDate" required />
+        <textarea id="diaryText" rows="4" placeholder="Hva gjorde vi i dag?" required></textarea>
+        <button type="submit">Lagre dagbok</button>
+      </form>
+      <div id="diaryEntries"></div>
+    </div>
+  </section>
+
+  <!-- Høyre: kalender -->
+  <aside>
+    <div class="card">
+      <div class="title"><div class="ico">📅</div><h2>Kalender</h2></div>
+      <form id="eventForm">
+        <input type="date" id="eventDate" required />
+        <input type="text" id="eventTitle" placeholder="Avtale / aktivitet" required />
+        <button type="submit">Legg til avtale</button>
+      </form>
+
+      <div class="cal-header">
+        <button id="prevMonth">« Forrige</button>
+        <h3 id="monthLabel"></h3>
+        <button id="nextMonth">Neste »</button>
+      </div>
+
+      <div class="calendar" id="calendar"></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+  // === Dagbok ===
+  const diaryForm=document.getElementById('diaryForm');
+  const diaryEntries=document.getElementById('diaryEntries');
+  const DIARY_KEY='praksis2025_diary';
+
+  function renderDiary(){
+    diaryEntries.innerHTML='';
+    const entries=JSON.parse(localStorage.getItem(DIARY_KEY)||'[]');
+    entries.forEach(e=>{
+      const el=document.createElement('div');
+      el.className='entry';
+      el.innerHTML=`<strong>${e.date}:</strong> ${e.text}`;
+      diaryEntries.appendChild(el);
+    });
+  }
+
+  diaryForm.addEventListener('submit',e=>{
+    e.preventDefault();
+    const date=document.getElementById('diaryDate').value;
+    const text=document.getElementById('diaryText').value.trim();
+    if(!date||!text) return;
+    const entries=JSON.parse(localStorage.getItem(DIARY_KEY)||'[]');
+    entries.unshift({date,text});
+    localStorage.setItem(DIARY_KEY,JSON.stringify(entries));
+    diaryForm.reset();
+    renderDiary();
+  });
+
+  renderDiary();
+
+  // === Kalender ===
+  const eventForm=document.getElementById('eventForm');
+  const calendarEl=document.getElementById('calendar');
+  const monthLabel=document.getElementById('monthLabel');
+  const EVENT_KEY='praksis2025_events';
+  let currentMonth=new Date();
+
+  function renderCalendar(){
+    calendarEl.innerHTML='';
+    const year=currentMonth.getFullYear();
+    const month=currentMonth.getMonth();
+    monthLabel.textContent=currentMonth.toLocaleString('no-NO',{month:'long',year:'numeric'});
+
+    const firstDay=new Date(year,month,1).getDay(); // søndag=0
+    const daysInMonth=new Date(year,month+1,0).getDate();
+
+    const events=JSON.parse(localStorage.getItem(EVENT_KEY)||'[]');
+
+    // tomme felt før 1.
+    for(let i=0;i<(firstDay===0?6:firstDay-1);i++){
+      calendarEl.appendChild(document.createElement('div'));
+    }
+
+    // dagene i måneden
+    for(let d=1;d<=daysInMonth;d++){
+      const cell=document.createElement('div');
+      const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      cell.innerHTML=`<strong>${d}</strong>`;
+
+      // dagens dato markering
+      const today=new Date();
+      if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()){
+        cell.classList.add('today');
+      }
+
+      // legg til events for denne dagen
+      events.filter(ev=>ev.date===dateStr).forEach(ev=>{
+        const evEl=document.createElement('div');
+        evEl.className='event';
+        evEl.textContent=ev.title;
+        cell.appendChild(evEl);
+      });
+
+      calendarEl.appendChild(cell);
+    }
+  }
+
+  eventForm.addEventListener('submit',e=>{
+    e.preventDefault();
+    const date=document.getElementById('eventDate').value;
+    const title=document.getElementById('eventTitle').value.trim();
+    if(!date||!title) return;
+    const events=JSON.parse(localStorage.getItem(EVENT_KEY)||'[]');
+    events.push({date,title});
+    localStorage.setItem(EVENT_KEY,JSON.stringify(events));
+    eventForm.reset();
+    renderCalendar();
+  });
+
+  document.getElementById('prevMonth').addEventListener('click',()=>{
+    currentMonth.setMonth(currentMonth.getMonth()-1);
+    renderCalendar();
+  });
+  document.getElementById('nextMonth').addEventListener('click',()=>{
+    currentMonth.setMonth(currentMonth.getMonth()+1);
+    renderCalendar();
+  });
+
+  renderCalendar();
+</script>
+</body>
+</html>
