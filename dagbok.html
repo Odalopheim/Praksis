@@ -102,30 +102,41 @@
     const firstDay=new Date(year,month,1).getDay(); // søndag=0
     const daysInMonth=new Date(year,month+1,0).getDate();
 
-    const events=JSON.parse(localStorage.getItem(EVENT_KEY)||'[]');
+    // Ukedager overskrifter
+    const dayNames = ['Søn', 'Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør'];
+    dayNames.forEach(day => {
+      const headerCell = document.createElement('div');
+      headerCell.style.fontWeight = '600';
+      headerCell.style.fontSize = '0.75rem';
+      headerCell.style.color = 'var(--text-muted)';
+      headerCell.style.textAlign = 'center';
+      headerCell.style.padding = '0.5rem';
+      headerCell.textContent = day;
+      calendarEl.appendChild(headerCell);
+    });
 
-    // tomme felt før 1.
-    for(let i=0;i<(firstDay===0?6:firstDay-1);i++){
+    // Tomme felt før 1.
+    for (let i = 0; i < (firstDay === 0 ? 6 : firstDay - 1); i++) {
       calendarEl.appendChild(document.createElement('div'));
     }
 
-    // dagene i måneden
-    for(let d=1;d<=daysInMonth;d++){
-      const cell=document.createElement('div');
-      const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      cell.innerHTML=`<strong>${d}</strong>`;
+    // Dagene i måneden
+    for (let d = 1; d <= daysInMonth; d++) {
+      const cell = document.createElement('div');
+      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      cell.innerHTML = `<strong>${d}</strong>`;
 
-      // dagens dato markering
-      const today=new Date();
-      if(d===today.getDate() && month===today.getMonth() && year===today.getFullYear()){
+      // Dagens dato markering
+      const today = new Date();
+      if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
         cell.classList.add('today');
       }
 
-      // legg til events for denne dagen
-      events.filter(ev=>ev.date===dateStr).forEach(ev=>{
-        const evEl=document.createElement('div');
-        evEl.className='event';
-        evEl.textContent=ev.title;
+      // Legg til events for denne dagen
+      events.filter(ev => ev.date === dateStr).forEach(ev => {
+        const evEl = document.createElement('div');
+        evEl.className = 'event';
+        evEl.textContent = ev.title;
         cell.appendChild(evEl);
       });
 
@@ -135,12 +146,17 @@
 
   eventForm.addEventListener('submit',e=>{
     e.preventDefault();
-    const date=document.getElementById('eventDate').value;
-    const title=document.getElementById('eventTitle').value.trim();
-    if(!date||!title) return;
-    const events=JSON.parse(localStorage.getItem(EVENT_KEY)||'[]');
-    events.push({date,title});
-    localStorage.setItem(EVENT_KEY,JSON.stringify(events));
+    const date = document.getElementById('eventDate').value;
+    const title = document.getElementById('eventTitle').value.trim();
+    
+    if (!date || !title) {
+      alert('Vennligst fyll ut dato og aktivitetstittel!');
+      return;
+    }
+    
+    const events = JSON.parse(localStorage.getItem(EVENT_KEY) || '[]');
+    events.push({ date, title });
+    localStorage.setItem(EVENT_KEY, JSON.stringify(events));
     eventForm.reset();
     renderCalendar();
   });
