@@ -5,17 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Praksis 2025 – Dagbok & Kalender</title>
   <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="Prosjektdagbok og kalenderstyring" />
 </head>
 <body>
 <header>
-  <div class="wrap row">
-    <div class="brand">
-      <div class="logo">UiA</div>
-      <div>
-        <h1>Dagbok & Kalender</h1>
-        <p class="muted">Skriv hva vi gjør hver dag + legg avtaler i kalenderen</p>
-        <a href="index.html" class="btn">Tilbake til status</a>
+  <div class="wrap">
+    <div class="header-content">
+      <div class="brand">
+        <div class="logo">UiA</div>
+        <div>
+          <h1>Dagbok & Kalender</h1>
+          <p class="muted">Skriv hva vi gjør hver dag + legg avtaler i kalenderen</p>
+        </div>
       </div>
+      
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="#om-oss" class="nav-link">Om Oss</a>
+        <a href="#status1" class="nav-link">Status 1</a>
+        <a href="#status2" class="nav-link">Status 2</a>
+        <a href="dagbok.html" class="nav-link active">Dagbok</a>
+      </nav>
+      
+      <div class="badge">Gruppe 2025 – Moment Analyse</div>
     </div>
   </div>
 </header>
@@ -24,11 +36,14 @@
   <!-- Venstre: dagbok -->
   <section>
     <div class="card">
-      <div class="title"><div class="ico">📓</div><h2>Dagbok</h2></div>
+      <div class="title">
+        <div class="ico">📓</div>
+        <h2>Dagbok</h2>
+      </div>
       <form id="diaryForm">
         <input type="date" id="diaryDate" required />
         <textarea id="diaryText" rows="4" placeholder="Hva gjorde vi i dag?" required></textarea>
-        <button type="submit">Lagre dagbok</button>
+        <button type="submit">💾 Lagre dagbok</button>
       </form>
       <div id="diaryEntries"></div>
     </div>
@@ -37,17 +52,20 @@
   <!-- Høyre: kalender -->
   <aside>
     <div class="card">
-      <div class="title"><div class="ico">📅</div><h2>Kalender</h2></div>
+      <div class="title">
+        <div class="ico">📅</div>
+        <h2>Kalender</h2>
+      </div>
       <form id="eventForm">
         <input type="date" id="eventDate" required />
         <input type="text" id="eventTitle" placeholder="Avtale / aktivitet" required />
-        <button type="submit">Legg til avtale</button>
+        <button type="submit">➕ Legg til avtale</button>
       </form>
 
       <div class="cal-header">
-        <button id="prevMonth">« Forrige</button>
+        <button id="prevMonth">◀ Forrige</button>
         <h3 id="monthLabel"></h3>
-        <button id="nextMonth">Neste »</button>
+        <button id="nextMonth">Neste ▶</button>
       </div>
 
       <div class="calendar" id="calendar"></div>
@@ -57,50 +75,75 @@
 
 <script>
   // === Dagbok ===
-  const diaryForm=document.getElementById('diaryForm');
-  const diaryEntries=document.getElementById('diaryEntries');
-  const DIARY_KEY='praksis2025_diary';
+  const diaryForm = document.getElementById('diaryForm');
+  const diaryEntries = document.getElementById('diaryEntries');
+  const DIARY_KEY = 'praksis2025_diary';
 
-  function renderDiary(){
-    diaryEntries.innerHTML='';
-    const entries=JSON.parse(localStorage.getItem(DIARY_KEY)||'[]');
-    entries.forEach(e=>{
-      const el=document.createElement('div');
-      el.className='entry';
-      el.innerHTML=`<strong>${e.date}:</strong> ${e.text}`;
+  function renderDiary() {
+    diaryEntries.innerHTML = '';
+    const entries = JSON.parse(localStorage.getItem(DIARY_KEY) || '[]');
+    
+    if (entries.length === 0) {
+      diaryEntries.innerHTML = '<p class="muted" style="text-align: center; margin-top: 1rem;">Ingen dagbokoppføringer ennå. Opprett din første oppføring!</p>';
+      return;
+    }
+    
+    entries.forEach(e => {
+      const el = document.createElement('div');
+      el.className = 'entry';
+      const date = new Date(e.date).toLocaleDateString('no-NO', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      el.innerHTML = `<strong>${date}:</strong> ${e.text}`;
       diaryEntries.appendChild(el);
     });
   }
 
-  diaryForm.addEventListener('submit',e=>{
+  diaryForm.addEventListener('submit', e => {
     e.preventDefault();
-    const date=document.getElementById('diaryDate').value;
-    const text=document.getElementById('diaryText').value.trim();
-    if(!date||!text) return;
-    const entries=JSON.parse(localStorage.getItem(DIARY_KEY)||'[]');
-    entries.unshift({date,text});
-    localStorage.setItem(DIARY_KEY,JSON.stringify(entries));
+    const date = document.getElementById('diaryDate').value;
+    const text = document.getElementById('diaryText').value.trim();
+    
+    if (!date || !text) {
+      alert('Vennligst fyll ut dato og dagboktekst!');
+      return;
+    }
+    
+    const entries = JSON.parse(localStorage.getItem(DIARY_KEY) || '[]');
+    entries.unshift({ date, text });
+    localStorage.setItem(DIARY_KEY, JSON.stringify(entries));
     diaryForm.reset();
     renderDiary();
   });
 
+  // Sett dagens dato som standard
+  document.getElementById('diaryDate').valueAsDate = new Date();
+
   renderDiary();
 
   // === Kalender ===
-  const eventForm=document.getElementById('eventForm');
-  const calendarEl=document.getElementById('calendar');
-  const monthLabel=document.getElementById('monthLabel');
-  const EVENT_KEY='praksis2025_events';
-  let currentMonth=new Date();
+  const eventForm = document.getElementById('eventForm');
+  const calendarEl = document.getElementById('calendar');
+  const monthLabel = document.getElementById('monthLabel');
+  const EVENT_KEY = 'praksis2025_events';
+  let currentMonth = new Date();
 
-  function renderCalendar(){
-    calendarEl.innerHTML='';
-    const year=currentMonth.getFullYear();
-    const month=currentMonth.getMonth();
-    monthLabel.textContent=currentMonth.toLocaleString('no-NO',{month:'long',year:'numeric'});
+  function renderCalendar() {
+    calendarEl.innerHTML = '';
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    
+    monthLabel.textContent = currentMonth.toLocaleString('no-NO', {
+      month: 'long',
+      year: 'numeric'
+    });
 
-    const firstDay=new Date(year,month,1).getDay(); // søndag=0
-    const daysInMonth=new Date(year,month+1,0).getDate();
+    const firstDay = new Date(year, month, 1).getDay(); // søndag=0
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const events = JSON.parse(localStorage.getItem(EVENT_KEY) || '[]');
 
     // Ukedager overskrifter
     const dayNames = ['Søn', 'Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør'];
@@ -144,7 +187,7 @@
     }
   }
 
-  eventForm.addEventListener('submit',e=>{
+  eventForm.addEventListener('submit', e => {
     e.preventDefault();
     const date = document.getElementById('eventDate').value;
     const title = document.getElementById('eventTitle').value.trim();
@@ -161,12 +204,13 @@
     renderCalendar();
   });
 
-  document.getElementById('prevMonth').addEventListener('click',()=>{
-    currentMonth.setMonth(currentMonth.getMonth()-1);
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    currentMonth.setMonth(currentMonth.getMonth() - 1);
     renderCalendar();
   });
-  document.getElementById('nextMonth').addEventListener('click',()=>{
-    currentMonth.setMonth(currentMonth.getMonth()+1);
+  
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
     renderCalendar();
   });
 
