@@ -30,6 +30,7 @@
   /* Border radius */
   --radius: 12px;
   --radius-sm: 8px;
+  --radius-full: 999px;
   
   /* Spacing */
   --space-xs: 0.5rem;
@@ -249,6 +250,27 @@ main {
   }
 }
 
+/* Fullbleed layout (tam genişlik sayfa) */
+.fullbleed .wrap {
+  max-width: none;
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
+}
+
+.fullbleed main {
+  max-width: none;
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .fullbleed .wrap,
+  .fullbleed main {
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+}
+
 @media (max-width: 480px) {
   .nav-menu {
     flex-direction: column;
@@ -271,6 +293,77 @@ main {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+}
+
+/* Team grid */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-xl);
+  margin-top: var(--space-lg);
+}
+
+.member {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-xl);
+  background: linear-gradient(180deg, var(--card), var(--bg));
+  box-shadow: var(--shadow);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.member h3 {
+  font-size: 1.125rem;
+  margin-top: var(--space);
+}
+
+.member .role {
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.member .bio {
+  margin-top: var(--space);
+  color: var(--text);
+}
+
+.avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: var(--radius-full);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  box-shadow: var(--shadow);
+  letter-spacing: 1px;
+}
+
+.tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space);
+}
+
+.tags span {
+  background: var(--border-light);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
 }
 
 .card::before {
@@ -649,5 +742,13 @@ a:hover {
   input, textarea {
     background: var(--card);
     color: var(--text);
+  }
+  .member {
+    background: linear-gradient(180deg, var(--card), #0f172a);
+  }
+  .tags span {
+    background: #0b1220;
+    color: var(--text-muted);
+    border-color: #243040;
   }
 }
