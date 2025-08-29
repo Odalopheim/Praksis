@@ -1,3 +1,55 @@
+/* Dagbok forbedringer */
+#diaryEntries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+  margin-top: var(--space);
+}
+
+.entry {
+  background: linear-gradient(180deg, var(--card), var(--border-light));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.entry:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  background: var(--card);
+}
+
+.entry strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.entry p {
+  margin: 0.25rem 0 0;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* En liten vertikal linje til venstre for stil */
+.entry::before {
+  content: '';
+  position: absolute;
+  top: var(--space);
+  bottom: var(--space);
+  left: 0;
+  width: 4px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  opacity: 0.8;
+}
+
 /* Modern CSS Reset */
 * {
   margin: 0;
