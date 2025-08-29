@@ -1,4 +1,4 @@
-/* Modern CSS Reset */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +6,7 @@
 }
 
 :root {
-  /* Modern renk paleti */
+
   --primary: #3b82f6;
   --primary-dark: #2563eb;
   --secondary: #64748b;
@@ -14,7 +14,7 @@
   --warning: #f59e0b;
   --danger: #ef4444;
   
-  /* Nötr renkler */
+  
   --bg: #f8fafc;
   --card: #ffffff;
   --text: #1e293b;
@@ -22,17 +22,17 @@
   --border: #e2e8f0;
   --border-light: #f1f5f9;
   
-  /* Gölgeler */
+ 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   
-  /* Border radius */
+  
   --radius: 12px;
   --radius-sm: 8px;
   --radius-full: 999px;
   
-  /* Spacing */
+ 
   --space-xs: 0.5rem;
   --space-sm: 0.75rem;
   --space: 1rem;
@@ -49,7 +49,7 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Loading animasyonu */
+
 .loading {
   display: inline-block;
   width: 20px;
@@ -64,7 +64,6 @@ body {
   to { transform: rotate(360deg); }
 }
 
-/* Header */
 header {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
@@ -150,7 +149,7 @@ h1 {
   border-color: var(--primary);
 }
 
-/* Navigation Menu */
+
 .nav-menu {
   display: flex;
   align-items: center;
@@ -206,7 +205,7 @@ h1 {
   box-shadow: var(--shadow-lg);
 }
 
-/* Main layout */
+
 main {
   max-width: 1200px;
   margin: 0 auto;
@@ -250,7 +249,7 @@ main {
   }
 }
 
-/* Fullbleed layout (tam genişlik sayfa) */
+
 .fullbleed .wrap {
   max-width: none;
   padding-left: var(--space-xl);
@@ -263,7 +262,7 @@ main {
   padding-right: var(--space-xl);
 }
 
-/* Om Oss özel düzen: tek sütun ve ortalama */
+
 .omoss main {
   max-width: 1200px;
   grid-template-columns: 1fr;
@@ -309,7 +308,7 @@ main {
   }
 }
 
-/* Cards */
+
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -321,7 +320,7 @@ main {
   overflow: hidden;
 }
 
-/* Hero card (geniş yuvarlatılmış başlık alanı) */
+
 .hero-card {
   background: linear-gradient(180deg, var(--card), var(--bg));
   border: 1px solid var(--border);
@@ -343,7 +342,7 @@ main {
   color: var(--text-muted);
 }
 
-/* Team grid */
+
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -352,7 +351,7 @@ main {
   align-items: stretch;
 }
 
-/* Geniş ekranlarda 3 sütun sabitle */
+
 @media (min-width: 1024px) {
   .team-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -488,7 +487,7 @@ h2 {
   color: var(--text);
 }
 
-/* Forms */
+
 form {
   display: flex;
   flex-direction: column;
@@ -517,7 +516,6 @@ textarea {
   min-height: 100px;
 }
 
-/* Buttons */
 button, .btn {
   padding: var(--space-sm) var(--space-lg);
   background: var(--primary);
@@ -571,7 +569,6 @@ button#clear:hover {
   background: #475569;
 }
 
-/* Messages */
 .msg {
   background: var(--border-light);
   border: 1px solid var(--border);
@@ -604,7 +601,7 @@ button#clear:hover {
   color: var(--text);
 }
 
-/* Status grid */
+
 .statusgrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -632,7 +629,7 @@ button#clear:hover {
   margin-bottom: 0.25rem;
 }
 
-/* Lists */
+
 ul {
   padding-left: var(--space-lg);
   margin: var(--space) 0;
@@ -648,7 +645,7 @@ li:hover {
   transform: translateX(2px);
 }
 
-/* Calendar */
+
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -728,7 +725,7 @@ li:hover {
   font-size: 0.75rem;
 }
 
-/* Diary entries */
+
 .entry {
   background: var(--border-light);
   border: 1px solid var(--border);
@@ -751,7 +748,7 @@ li:hover {
   font-weight: 600;
 }
 
-/* Links */
+
 a {
   color: var(--primary);
   text-decoration: none;
@@ -763,7 +760,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Responsive improvements */
+
 @media (max-width: 480px) {
   .card {
     padding: var(--space);
@@ -789,7 +786,7 @@ a:hover {
   }
 }
 
-/* Dark mode desteği */
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0f172a;
